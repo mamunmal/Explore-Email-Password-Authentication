@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase_config_init";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router";
 
 const SignUp = () => {
 
@@ -76,6 +77,9 @@ const SignUp = () => {
                     </label>
                     <br />
                     <button className="btn btn-neutral mx-auto mt-4">SignUp</button>
+                    <p>Already have an account?Please 
+                        <Link className='text-blue-600 underline' to='/login'
+                        >Login</Link></p>
                 </form>
                 {
                     errorMessage && <p className="text-shadow-red-500">{errorMessage}</p>
