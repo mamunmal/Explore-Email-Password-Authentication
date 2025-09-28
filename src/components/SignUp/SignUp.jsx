@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase_config_init";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,6 +13,8 @@ const SignUp = () => {
     const handleSignUp = e => {
         e.preventDefault()
 
+        const name = e.target.name.value;
+        const photo = e.target.photo.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         const terms = e.target.terms.checked;
@@ -43,6 +45,16 @@ const SignUp = () => {
                     setSuccess(true);
                     alert('We send you verification email. Please check your email')
                 })
+                //update user profile
+                const profile = {
+                    displayName: name,
+                    photoURL: photo
+                }
+                updateProfile(auth.currentUser, profile)
+                .then(() =>{
+                    console.log('user profile update')
+                })
+                .catch(error => console.log(error))
             })
             .catch(error => {
                 console.log(error);
@@ -55,6 +67,10 @@ const SignUp = () => {
             <div className="card-body">
                 <h1 className="text-3xl font-bold">Please SignUp now!</h1>
                 <form onSubmit={handleSignUp}>
+                    <label className="label">Name</label>
+                    <input type="text" name="name" className="input" placeholder="Your Name" />
+                    <label className="label mt-2.5">Photo URL</label>
+                    <input type="text" name="photo" className="input" placeholder="Photo URL" />
                     <label className="label">Email</label>
                     <input type="email" name="email" className="input" placeholder="Email" />
                     <label className="label mt-4">Password</label>
@@ -74,9 +90,8 @@ const SignUp = () => {
                             }
                         </button>
                     </div>
-                    <div><a className="link link-hover">Forgot password?</a></div>
 
-                    <label className="label">
+                    <label className="label mt-2">
                         <input type="checkbox" name="terms"
                         className="checkbox" />
                         Accept terms and condition!
